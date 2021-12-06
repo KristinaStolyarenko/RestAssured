@@ -1,0 +1,10 @@
+.DS_Store
+.gradle/
+.idea/
+build/
+gradle/
+gradlew
+gradlew.bat
+.allure
+credentials.properties
+settings.gradle
