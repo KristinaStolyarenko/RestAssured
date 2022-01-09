@@ -1,5 +1,7 @@
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
+
+import static filters.CustomLogFilter.customLogFilter;
 import static org.hamcrest.Matchers.is;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -9,6 +11,8 @@ public class RestApiTests {
     @Test
     void createUser() {
         given()
+                .log().all()
+                .filter(customLogFilter().withCustomTemplates())
                 .contentType(ContentType.JSON)
                 .body("{\"name\": \"andrey\",\"job\": \"qa\"}")
                 .when()
@@ -21,6 +25,8 @@ public class RestApiTests {
     @Test
     void getSingleUser() {
         given()
+                .log().all()
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("https://reqres.in/api/users/1")
                 .then()
@@ -32,6 +38,8 @@ public class RestApiTests {
     @Test
     void putUser() {
         given()
+                .log().all()
+                .filter(customLogFilter().withCustomTemplates())
                 .contentType(ContentType.JSON)
                 .body("{\"name\": \"Gosha\"}")
                 .when()
@@ -44,6 +52,8 @@ public class RestApiTests {
     @Test
     void patchUser() {
         given()
+                .log().all()
+                .filter(customLogFilter().withCustomTemplates())
                 .contentType(ContentType.JSON)
                 .body("{\"name\": \"Bob\",\"job\": \"hunter\"}")
                 .when()
@@ -57,6 +67,8 @@ public class RestApiTests {
     @Test
     void deleteUser() {
         given()
+                .log().all()
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .delete("https://reqres.in/api/users/1")
                 .then()
@@ -66,6 +78,8 @@ public class RestApiTests {
     @Test
     void getWithNotExistUser() {
         given()
+                .log().all()
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("https://reqres.in/api/users/23")
                 .then()
