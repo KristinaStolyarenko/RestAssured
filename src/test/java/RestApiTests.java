@@ -55,12 +55,21 @@ public class RestApiTests {
     }
 
     @Test
-    void DeleteUser() {
+    void deleteUser() {
         given()
                 .when()
                 .delete("https://reqres.in/api/users/1")
                 .then()
                 .statusCode(204);
+    }
+
+    @Test
+    void getWithNotExistUser() {
+        given()
+                .when()
+                .get("https://reqres.in/api/users/23")
+                .then()
+                .statusCode(404);
     }
 
 }
