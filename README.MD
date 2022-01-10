@@ -1,9 +1,10 @@
 # Проект для сайта [reqres.in](https://reqres.in/)
 
 ## :gear: Стек технологий:
-| IDEA | Java | Rest-Assured | Allure Report | Gradle | Junit5 | GitHub | Jenkins |
-|:--------:|:-------------:|:---------:|:-------:|:----:|:------:|:----:|:----:|:------:|
-| <img src="images/Intelij_IDEA.svg" width="40" height="40"> | <img src="images/JAVA.svg" width="40" height="40"> |  <img src="images/Rest-Assured.svg" width="40" height="40"> | <img src="images/Allure_Report.svg" width="40" height="40"> | <img src="images/Gradle.svg" width="40" height="40"> | <img src="images/Junit5.svg" width="40" height="40"> | <img src="images/GitHub.svg" width="40" height="40"> | <img src="images/Jenkins.svg" width="40" height="40"> |
+
+| GitHub | IDEA | Java | Junit5 | Gradle | Rest-Assured| Allure Report| Jenkins | Telegram |
+|:--------:|:-------------:|:---------:|:-------:|:----:|:------:|:----:|:----:|:----:|
+| <img src="images/GitHub.svg" width="40" height="40"> | <img src="images/IDEA.svg" width="40" height="40"> | <img src="images/JAVA.svg" width="40" height="40"> | <img src="images/Junit5.svg" width="40" height="40"> | <img src="images/Gradle.svg" width="40" height="40"> | <img src="images/Rest-Assured.svg" width="40" height="40"> | <img src="images/Allure Report.svg" width="40" height="40"> | <img src="images/Jenkins.svg" width="40" height="40"> | <img src="images/Telegram.svg" width="40" height="40"> |
 ___
 
 ## Тестируемая функциональность
@@ -27,7 +28,7 @@ ___
 gradle clean test
 ```
 
-##Генерация отчета происходит в Allure Report
+## Генерация отчета происходит в Allure Report
 
 Для генерации отчета необходимо выполнить следующую команду:
 
