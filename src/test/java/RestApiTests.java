@@ -1,76 +1,82 @@
-import io.restassured.http.ContentType;
+import models.NewUser;
+import lombok.UserData;
 import org.junit.jupiter.api.Test;
 
-import static filters.CustomLogFilter.customLogFilter;
 import static org.hamcrest.Matchers.is;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.Specs.requestSpec;
+import static specs.Specs.responseSpec;
 
 public class RestApiTests {
 
     @Test
     void createUser() {
-        given()
-                .log().all()
-                .filter(customLogFilter().withCustomTemplates())
-                .contentType(ContentType.JSON)
-                .body("{\"name\": \"andrey\",\"job\": \"qa\"}")
+        NewUser testUser = new NewUser();
+        testUser.setName("Andrey");
+        testUser.setJob("QA");
+
+        NewUser newUser = given()
+                .spec(requestSpec)
+                .body(testUser)
                 .when()
-                .post("https://reqres.in/api/users")
+                .post("/users")
                 .then()
                 .statusCode(201)
-                .body("name", is("andrey"), "job", is("qa"));
+                .extract().as(NewUser.class);
+        assertEquals(testUser.getName(), newUser.getName());
+        assertEquals(testUser.getJob(), newUser.getJob());
     }
 
     @Test
     void getSingleUser() {
-        given()
-                .log().all()
-                .filter(customLogFilter().withCustomTemplates())
+        UserData userData = given()
+                .spec(requestSpec)
                 .when()
-                .get("https://reqres.in/api/users/1")
+                .get("/users/1")
                 .then()
-                .statusCode(200)
-                .body("data.email", is("george.bluth@reqres.in"), "data.first_name",
-                        is("George"),"data.last_name", is("Bluth"));
+                .spec(responseSpec)
+                .extract().as(UserData.class);
+        assertEquals(1, userData.getUser().getId());
+        assertEquals("george.bluth@reqres.in", userData.getUser().getEmail());
+        assertEquals("George", userData.getUser().getFirstName());
+        assertEquals("Bluth", userData.getUser().getLastName());
     }
 
     @Test
     void putUser() {
         given()
-                .log().all()
-                .filter(customLogFilter().withCustomTemplates())
-                .contentType(ContentType.JSON)
+                .spec(requestSpec)
                 .body("{\"name\": \"Gosha\"}")
                 .when()
-                .put("https://reqres.in/api/users/1")
+                .put("/users/1")
                 .then()
-                .statusCode(200)
-                .body( "name", is("Gosha"),"updatedAt", notNullValue());
+                .spec(responseSpec)
+                .body("name", is("Gosha"))
+                .body("updatedAt", notNullValue());
     }
 
     @Test
     void patchUser() {
         given()
-                .log().all()
-                .filter(customLogFilter().withCustomTemplates())
-                .contentType(ContentType.JSON)
+                .spec(requestSpec)
                 .body("{\"name\": \"Bob\",\"job\": \"hunter\"}")
                 .when()
-                .patch("https://reqres.in/api/users/1")
+                .patch("/users/1")
                 .then()
-                .statusCode(200)
-                .body( "name", is("Bob"), "job", is("hunter"),
-                        "updatedAt", notNullValue());
+                .spec(responseSpec)
+                .body("name", is("Bob"))
+                .body("job", is("hunter"))
+                .body("updatedAt", notNullValue());
     }
 
     @Test
     void deleteUser() {
         given()
-                .log().all()
-                .filter(customLogFilter().withCustomTemplates())
+                .spec(requestSpec)
                 .when()
-                .delete("https://reqres.in/api/users/1")
+                .delete("/users/1")
                 .then()
                 .statusCode(204);
     }
@@ -78,12 +84,21 @@ public class RestApiTests {
     @Test
     void getWithNotExistUser() {
         given()
-                .log().all()
-                .filter(customLogFilter().withCustomTemplates())
+                .spec(requestSpec)
                 .when()
-                .get("https://reqres.in/api/users/23")
+                .get("/users/23")
                 .then()
                 .statusCode(404);
     }
 
+    @Test
+    void getListUsers() {
+        given()
+                .spec(requestSpec)
+                .when()
+                .get("/users")
+                .then()
+                .body("data.findAll{it.email =~/.*?@reqres.in/}.email.flatten()",
+                        hasItem("george.bluth@reqres.in"));
+    }
 }

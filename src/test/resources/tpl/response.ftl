@@ -1,5 +1,5 @@
 <html>
-<#-- @ftlvariable name="data" type="io.qameta.allure.attachment.http.HttpRequestAttachment" -->
+<#-- @ftlvariable name="data" type="io.qameta.allure.attachment.http.HttpResponseAttachment" -->
 <head>
     <meta http-equiv="content-type" content="text/html; charset = UTF-8">
     <script src="https://yastatic.net/jquery/2.2.3/jquery.min.js" crossorigin="anonymous"></script>
@@ -21,16 +21,14 @@
     </style>
 </head>
 <body>
-<div>
-    <pre><code><#if data.method??>${data.method}<#else>GET</#if>: <#if data.url??>${data.url}<#else>Unknown</#if></code></pre>
-</div>
+<div><h4>Status code</h4> <#if data.responseCode??>
+        <pre><code><b>${data.responseCode}</b></code></pre>
+    <#else>Unknown</#if></div>
+<#if data.url??>
 
-<#if data.body??>
-    <h4>Body</h4>
     <div>
-        <pre><code>${data.body}</code></pre>
-    </div>
-</#if>
+    <pre><code>${data.url}</code></pre>
+    </div></#if>
 
 <#if (data.headers)?has_content>
     <h4>Headers</h4>
@@ -43,6 +41,12 @@
     </div>
 </#if>
 
+<#if data.body??>
+    <h4>Body</h4>
+    <div>
+        <pre><code>${data.body}</code></pre>
+    </div>
+</#if>
 
 <#if (data.cookies)?has_content>
     <h4>Cookies</h4>
@@ -52,13 +56,6 @@
                 <pre><code><b>${name}</b>: ${value}</code></pre>
             </div>
         </#list>
-    </div>
-</#if>
-
-<#if data.curl??>
-    <h4>Curl</h4>
-    <div>
-        <pre><code>${data.curl}</code></pre>
     </div>
 </#if>
 </body>
